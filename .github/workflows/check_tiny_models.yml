@@ -3,7 +3,7 @@ name: Check Tiny Models
 on:
   push:
     branches:
-      - check_tiny_model_multi_proc
+      - check_tiny_models*
   repository_dispatch:
   schedule:
     - cron: "0 2 * * *"
@@ -51,7 +51,6 @@ jobs:
 
       - name: Run pipeline tests against all new (local) tiny models
         run: |
-          rm -rf tests/models/nllb_moe
           OMP_NUM_THREADS=1 TINY_MODEL_HUB_ORG=tiny_local_models python -m pytest --max-worker-restart=0 -n 2 --dist=loadfile -s -rA --make-reports=tests_pipelines tests/models -m is_pipeline_test -k "test_pipeline_" | tee tests_output.txt
 
       - name: Test suite reports artifacts
